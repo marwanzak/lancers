@@ -5,12 +5,21 @@
 <title>Lancers!</title>
 
 <link rel="stylesheet" href="<?= base_url(); ?>
-	css/style.css" type="text/css" media="screen" />
+	css/style.css"
+	type="text/css" media="screen" />
+<link rel="stylesheet" href="<?= base_url(); ?>
+	css/home.css"
+	type="text/css" media="screen" />
 <!--[if IE 6]><link rel="stylesheet" href="<?= base_url()?>css/style.ie6.css" type="text/css" media="screen" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" href="<?= base_url()?>css/style.ie7.css" type="text/css" media="screen" /><![endif]-->
-
-<script type="text/javascript" src="jquery.js"></script>
+<link rel="stylesheet"
+	href="<?= base_url(); ?>css/theme/jquery-ui-1.10.1.custom.min.css"
+	type="text/css" />
+<script type="text/javascript" src="<?= base_url()?>js/jquery.js"></script>
 <script type="text/javascript" src="<?= base_url()?>js/home.js"></script>
+<script src="<?= base_url();?>js/jquery-ui-1.10.1.custom.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
 </head>
 <body>
 	<div id="art-page-background-middle-texture">
@@ -30,26 +39,50 @@
 						<div class="l"></div>
 						<div class="r"></div>
 						<ul class="art-menu">
-							<li><a href="#" class="active"><span class="l"></span><span
-									class="r"></span><span class="t">Home</span> </a>
+							<?php 
+							echo "<div class='logout_div'>";
+							echo ' Mr.'.$this->session->userdata('user_name');
+							echo '<a href='.base_url().'home/do_logout>Log out</a>';
+							echo '</div>';
+
+							$user_role=$this->session->userdata('user_role');
+
+							switch($user_role)
+							{
+								case 'admin':
+									?>
+							<li><a href="<?= base_url(); ?>home/c_panel/main"><span class="l"></span><span
+									class="r"></span><span class="t">Main</span> </a>
 							</li>
-							<li><a href="#"><span class="l"></span><span class="r"></span><span
-									class="t">Menu Item</span> </a>
-								<ul>
-									<li><a href="#">Menu Subitem 1</a>
-										<ul>
-											<li><a href="#">Menu Subitem 1.1</a></li>
-											<li><a href="#">Menu Subitem 1.2</a></li>
-											<li><a href="#">Menu Subitem 1.3</a></li>
-										</ul>
-									</li>
-									<li><a href="#">Menu Subitem 2</a></li>
-									<li><a href="#">Menu Subitem 3</a></li>
-								</ul>
+							<li><a href="<?= base_url(); ?>home/c_panel/la_admins"><span
+									class="l"></span><span class="r"></span><span class="t">Admins</span>
+							</a>
 							</li>
-							<li><a href="#"><span class="l"></span><span class="r"></span><span
-									class="t">About</span> </a>
+							<li><a href="<?= base_url(); ?>home/c_panel/la_lancers"><span
+									class="l"></span><span class="r"></span><span class="t">Lancers</span>
+							</a>
 							</li>
+							<li><a href="<?= base_url(); ?>home/c_panel/la_projects"><span
+									class="l"></span><span class="r"></span><span class="t">Projects</span>
+							</a>
+							</li>
+
+							<?php 
+							break;
+					case 'lancer':	?>
+							<li><a href="<?= base_url(); ?>Home/c_panel/home"><span class="l"></span><span
+									class="r"></span><span class="t"> Main </span> </a>
+							</li>
+							<li><a href="<?= base_url(); ?>Home/c_panel/la_lancers"><span
+									class="l"></span><span class="r"></span><span class="t">
+										Projects </span> </a>
+							</li>
+							<?php
+							break;
+
+					} ?>
+
+
 						</ul>
 					</div>
 					<div class="art-content-layout">
