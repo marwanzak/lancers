@@ -130,7 +130,7 @@
 											'style' => 'display:none;'
 											);
 			$att=array('id'=>'lancer_modify_form');
-			echo form_open('',$att);
+			echo form_open('home/modify_lancer',$att);
 
 			echo form_input($lancer_hidden_past_id);
 				
@@ -141,6 +141,30 @@
 			?>
 
 </div>
+
+<!-- modify Admin dialog -->
+<div id="admin_modify_dialog" title="Modify admin data" class='dialog_div'>
+
+	<?php 
+
+			$admin_hidden_past_id = array('id'  => 'hidden_past_admin_id',
+											'name'=> 'hidden_past_admin_name',
+											'style' => 'display:none;'
+											);
+			$att=array('id'=>'admin_modify_form');
+			echo form_open('home/modify_admin',$att);
+
+			echo form_input($admin_hidden_past_id);
+				
+			echo form_close();
+
+
+
+			?>
+
+</div>
+
+
 
 
 

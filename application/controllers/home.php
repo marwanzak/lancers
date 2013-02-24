@@ -77,6 +77,14 @@ class home extends CI_Controller {
 	
 	}
 	
+	//////////////////////////
+	public function get_admin(){
+		$admin_id = $_POST['admin_id'];
+		$admin_query = $this->HomeModel->get_where('la_admins',array('admin_id'=>$admin_id));
+		echo json_encode($admin_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
+	
+	}
+	
 	//////////////
 	public function add_project(){
 	
@@ -94,6 +102,28 @@ class home extends CI_Controller {
 		redirect('home','refresh');
 	
 	
+	}
+	
+
+	//////////////////
+	public function modify_lancer() {
+		$lancer_past_id = $_POST['hidden_past_lancer_name'];
+		$att1 = array(
+				'lancer_name' 		=> $_POST ['lancer_name'],
+				'lancer_username'	=> $_POST ['lancer_username'],
+				'lancer_password'	=> $_POST ['lancer_password'],
+				'lancer_email'		=> $_POST ['lancer_email'],
+				'lancer_mobile'		=> $_POST ['lancer_mobile'],
+				'lancer_country'	=> $_POST ['lancer_country'],
+				'lancer_city'		=> $_POST ['lancer_city'],
+				'lancer_paymethod'	=> $_POST ['lancer_paymethod'],
+				'lancer_skills'		=> $_POST ['lancer_skills'],
+				'lancer_level'		=> $_POST ['lancer_level']
+		);
+		$this->db->where('lancer_id',$lancer_past_id);
+		$this->db->update('la_lancers', $att1);
+		redirect('home','refresh');
+		
 	}
 	
 	////////////////

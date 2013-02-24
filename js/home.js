@@ -10,11 +10,11 @@ $(document).ready(function()
 
 	// lancer details array from the lancer table in the database.
 	var lancer_array = ['Full name', 'Username',
-	                 'Password', 'Email',
-	                 'Mobile', 'Country',
-	                 'City', 'Payment method',
-	                 'Lancer skills', 'Lancer level'];
-	
+	                    'Password', 'Email',
+	                    'Mobile', 'Country',
+	                    'City', 'Payment method',
+	                    'Lancer skills', 'Lancer level'];
+
 	// Modify lancer.
 	$('.modify_lancer').click(function(){
 		$(".modify_submit").remove();
@@ -32,17 +32,29 @@ $(document).ready(function()
 
 					$.each( Obj, function( key, lancer_value ) {
 
-						$('#lancer_modify_form').append("<label class='lancer_class'>"+ lancer_array[j] + "</label>");
-						$('<input/>').attr({ type: 'text', class: 'lancer_class', name: key, value: lancer_value}).appendTo("#lancer_modify_form");
-						
+						$('#lancer_modify_form').append(
+								"<label class='lancer_class'>"+
+								lancer_array[j] + "</label>"
+						);
+						$('<input/>').attr({type: 'text',
+							class: 'lancer_class',
+							name: key, value: lancer_value})
+							.appendTo("#lancer_modify_form"
+							);
+
 						j++;	
 					});
-					$('#lancer_modify_form').append("<input class='modify_submit' type=submit value='Modify' />");	
+					$('#lancer_modify_form').append(
+					"<input class='modify_submit' type=submit value='Modify' />");	
 
 				},"json");		
-		modify_dialog('#lancer_modify_dialog', '.modify_lancer', 'hidden_past_lancer_id')
+		modify_dialog('#lancer_modify_dialog', '.modify_lancer',
+		'hidden_past_lancer_id')
 	});
-	
+	modify_dialog_open('.modify_admin_button', 'get_admin', admin_id,
+			'.admin_class', '#admin_modify_form', admin_array,
+			'#admin_modify_dialog', 'hidden_past_admin_id');
+
 
 	$('.lancer_details_button').click(function(){
 		$.post(base_url + 'get_lancer',
@@ -57,8 +69,13 @@ $(document).ready(function()
 					var j=0;
 					$.each( Obj, function( key, value2 ) {
 
-						$('#lancer_details_dialog').append("<label class='lancer_class'>"+ lancer_array[j] + "</label>");
-						$('<input/>').attr({ type: 'text', class: 'lancer_class', name: key, value: value2, disabled: 'disabled' }).appendTo("#lancer_details_dialog");
+						$('#lancer_details_dialog').append("<label class='lancer_class'>"+
+								lancer_array[j] + "</label>");
+						$('<input/>').attr({ type: 'text',
+							class: 'lancer_class',
+							name: key, value: value2,
+							disabled: 'disabled' })
+							.appendTo("#lancer_details_dialog");
 
 						j++;	
 					});
@@ -74,7 +91,7 @@ function add_dialog(dest,butt)
 	$( dest ).dialog( { autoOpen: false, draggable: true,
 		modal: true, resizable: false,
 		show: { effect: 'drop', direction: "up" } ,
-		width: 700 } );
+		width: 500 } );
 
 	$(butt).click(function(){
 
@@ -88,7 +105,7 @@ function modify_dialog(dest,butt,hidden_element)
 {
 	$( dest ).dialog( { autoOpen: false, draggable: true,
 		modal: true, resizable: false,
-		show: { effect: 'drop', direction: "up" } ,
+		show: { effect: 'drop', direction: "down" } ,
 		width: 500 } );
 
 	$(butt).click(function(){
@@ -119,4 +136,42 @@ function form_submit(submit_form,submit_dest)
 					});			
 		}	
 	})
+}
+
+function modify_dialog_open(button, method, id, modifyclass, formid, modifyarray, modifydialog, hiddenid){
+	$(button).click(function(){
+		$(".modify_submit").remove();
+
+		$.post(base_url + method,
+				{id:this.id},		
+				function(data){
+					var jsonStr = JSON.stringify(data);
+					jsonStr = jsonStr.replace('[','');
+					jsonStr = jsonStr.replace(']','');
+					var Obj = jQuery.parseJSON(jsonStr);
+					delete Obj[id];
+					$(modifyclass).remove();
+					var j=0;
+
+					$.each( Obj, function( key, modify_value ) {
+
+						$(formid).append(
+								"<label class='"+modifyclass+"'>"+
+								modifyarray[j] + "</label>"
+						);
+						$('<input/>').attr({type: 'text',
+							class: modifyclass,
+							name: key, value: modify_value})
+							.appendTo(formid
+							);
+
+						j++;	
+					});
+					$(formid).append(
+					"<input class='modify_submit' type=submit value='Modify' />");	
+
+				},"json");		
+		modify_dialog(modifydialog, modifyclass,
+		hiddenid)
+	});
 }
