@@ -4,22 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Lancers!</title>
 
-<link rel="stylesheet" href="<?= base_url(); ?>
-	css/style.css"
-	type="text/css" media="screen" />
-<link rel="stylesheet" href="<?= base_url(); ?>
-	css/home.css"
-	type="text/css" media="screen" />
-<!--[if IE 6]><link rel="stylesheet" href="<?= base_url()?>css/style.ie6.css" type="text/css" media="screen" /><![endif]-->
-<!--[if IE 7]><link rel="stylesheet" href="<?= base_url()?>css/style.ie7.css" type="text/css" media="screen" /><![endif]-->
+<link rel="stylesheet" href="<?= base_url(); ?>css/style.css"
+	type="text/css" />
+	
+<link rel="stylesheet" href="<?= base_url(); ?>css/home.css"
+	type="text/css" />
+	
+<!--[if IE 6]><link rel="stylesheet" href="<?= base_url()?>css/style.ie6.css" type="text/css" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="<?= base_url()?>css/style.ie7.css" type="text/css"/><![endif]-->
+	
 <link rel="stylesheet"
 	href="<?= base_url(); ?>css/theme/jquery-ui-1.10.1.custom.min.css"
 	type="text/css" />
+	
 <script type="text/javascript" src="<?= base_url()?>js/jquery.js"></script>
 <script type="text/javascript" src="<?= base_url()?>js/home.js"></script>
 <script src="<?= base_url();?>js/jquery-ui-1.10.1.custom.min.js"></script>
+
 <script language="javascript" type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+	
 </head>
 <body>
 	<div id="art-page-background-middle-texture">

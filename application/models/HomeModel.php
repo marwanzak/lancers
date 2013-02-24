@@ -24,10 +24,19 @@ class HomeModel extends CI_Model {
 	public function get_admins(){
 		$query=$this->db->get('la_admins');
 		foreach ($query->result() as $row){
-			$levels[$row->admin_id]=$row->admin_name;
+			$admins[$row->admin_id]=$row->admin_name;
 
 		}
-		return $levels;
+		return $admins;
+	}
+	
+	public function get_lancers(){
+		$query=$this->db->get('la_lancers');
+		foreach ($query->result() as $row){
+			$lancers[$row->lancer_id]=$row->lancer_name;
+	
+		}
+		return $lancers;
 	}
 	
 	public function validate(){
