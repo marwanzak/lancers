@@ -198,3 +198,29 @@ input[type="text"]{
 	
 }
 
+#currencyagreement label, #deadlineagreement label{
+	width:30px;
+	height:15px;
+	
+}
+
+
+#ApproveButtonLabel1.ui-state-active, #ApproveButtonLabel2.ui-state-active  { background: rgb(180,221,180);
+background: -moz-linear-gradient(top,  rgb(180,221,180) 0%, rgb(131,199,131) 17%, rgb(82,177,82) 33%, rgb(0,138,0) 67%, rgb(0,87,0) 83%, rgb(0,36,0) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(180,221,180)), color-stop(17%,rgb(131,199,131)), color-stop(33%,rgb(82,177,82)), color-stop(67%,rgb(0,138,0)), color-stop(83%,rgb(0,87,0)), color-stop(100%,rgb(0,36,0)));
+background: -webkit-linear-gradient(top,  rgb(180,221,180) 0%,rgb(131,199,131) 17%,rgb(82,177,82) 33%,rgb(0,138,0) 67%,rgb(0,87,0) 83%,rgb(0,36,0) 100%);
+background: -o-linear-gradient(top,  rgb(180,221,180) 0%,rgb(131,199,131) 17%,rgb(82,177,82) 33%,rgb(0,138,0) 67%,rgb(0,87,0) 83%,rgb(0,36,0) 100%);
+background: -ms-linear-gradient(top,  rgb(180,221,180) 0%,rgb(131,199,131) 17%,rgb(82,177,82) 33%,rgb(0,138,0) 67%,rgb(0,87,0) 83%,rgb(0,36,0) 100%);
+background: linear-gradient(to bottom,  rgb(180,221,180) 0%,rgb(131,199,131) 17%,rgb(82,177,82) 33%,rgb(0,138,0) 67%,rgb(0,87,0) 83%,rgb(0,36,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4ddb4', endColorstr='#002400',GradientType=0 ); }
+
+#RejectButtonLabel1.ui-state-active, #RejectButtonLabel2.ui-state-active { background: rgb(255,5,5);
+background: -moz-linear-gradient(top,  rgb(255,5,5) 0%, rgb(143,2,34) 44%, rgb(140,0,0) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,5,5)), color-stop(44%,rgb(143,2,34)), color-stop(100%,rgb(140,0,0)));
+background: -webkit-linear-gradient(top,  rgb(255,5,5) 0%,rgb(143,2,34) 44%,rgb(140,0,0) 100%);
+background: -o-linear-gradient(top,  rgb(255,5,5) 0%,rgb(143,2,34) 44%,rgb(140,0,0) 100%);
+background: -ms-linear-gradient(top,  rgb(255,5,5) 0%,rgb(143,2,34) 44%,rgb(140,0,0) 100%);
+background: linear-gradient(to bottom,  rgb(255,5,5) 0%,rgb(143,2,34) 44%,rgb(140,0,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0505', endColorstr='#8c0000',GradientType=0 );
+ }
+

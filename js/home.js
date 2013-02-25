@@ -8,12 +8,19 @@ $(document).ready(function()
 	add_dialog('#add_project_dialog','.add_project');
 	add_dialog('#lancer_details_dialog','.lancer_details_button');
 
+	 $(function() {
+		 $( "#currencyagreement" ).buttonset();
+		 $( "#deadlineagreement" ).buttonset();
+
+		 });
 	// lancer details array from the lancer table in the database.
 	var lancer_array = ['Full name', 'Username',
 	                    'Password', 'Email',
 	                    'Mobile', 'Country',
 	                    'City', 'Payment method',
 	                    'Lancer skills', 'Lancer level'];
+	
+	var admin_array = ['Full name', 'Username', 'Password','Email', 'Mobile'];
 
 	// Modify lancer.
 	$('.modify_lancer').click(function(){
@@ -51,10 +58,43 @@ $(document).ready(function()
 		modify_dialog('#lancer_modify_dialog', '.modify_lancer',
 		'hidden_past_lancer_id')
 	});
-	modify_dialog_open('.modify_admin_button', 'get_admin', admin_id,
-			'.admin_class', '#admin_modify_form', admin_array,
-			'#admin_modify_dialog', 'hidden_past_admin_id');
 
+	// Modify lancer.
+	$('.modify_admin').click(function(){
+		$(".modify_submit").remove();
+
+		$.post(base_url +'get_admin',
+				{admin_id:this.id},		
+				function(data){
+					var jsonStr = JSON.stringify(data);
+					jsonStr = jsonStr.replace('[','');
+					jsonStr = jsonStr.replace(']','');
+					var Obj = jQuery.parseJSON(jsonStr);
+					delete Obj['admin_id'];
+					$('.admin_class').remove();
+					var j=0;
+
+					$.each( Obj, function( key, admin_value ) {
+
+						$('#admin_modify_form').append(
+								"<label class='admin_class'>"+
+								admin_array[j] + "</label>"
+						);
+						$('<input/>').attr({type: 'text',
+							class: 'admin_class',
+							name: key, value: admin_value})
+							.appendTo("#admin_modify_form"
+							);
+
+						j++;	
+					});
+					$('#admin_modify_form').append(
+					"<input class='modify_submit' type=submit value='Modify' />");	
+
+				},"json");		
+		modify_dialog('#admin_modify_dialog', '.modify_admin',
+		'hidden_past_admin_id')
+	});
 
 	$('.lancer_details_button').click(function(){
 		$.post(base_url + 'get_lancer',

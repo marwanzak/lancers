@@ -83,7 +83,9 @@
 	$input_values = array('pr_title'		=> 'Title',
 						  'pr_requires'		=> 'Requirements',
 						  'pr_currency'		=> 'Currency',
+						  'pr_admincuragree'=> 'Currency agreement',
 						  'pr_dl'			=> 'Deadline',
+						  'pr_admindlagree' => 'Deadline agreement',
 						  'pr_obj'			=> 'Objectives',
 						  'pr_desc'			=> 'Description',
 						  'pr_attach'		=> 'Attachments',
@@ -105,6 +107,35 @@
 			echo "<textarea name='".$key."' rows='4' cols='20'></textarea>";
 			echo "</p>";
 			continue;
+		}
+		if($key == 'pr_admincuragree')
+		{
+			echo'<div id="currencyagreement">
+    <input type="radio" id="ApproveButton1" name="pr_admincuragree" value = "1" checked />
+    <label id="ApproveButtonLabel1" for="ApproveButton1"></label>
+
+    <input type="radio" id="RejectButton1" name="pr_admincuragree" value = "0" />
+    <label id="RejectButtonLabel1" for="RejectButton1"></label>
+	</div>';
+			echo "</p><br/>";
+				
+			continue;
+				
+		}
+		
+		if($key == 'pr_admindlagree')
+		{
+			echo'<div id="deadlineagreement">
+    <input type="radio" id="ApproveButton2" name="pr_admindlagree" value = "1" checked />
+    <label id="ApproveButtonLabel2" for="ApproveButton2"></label>
+		
+    <input type="radio" id="RejectButton2" name="pr_admindlagree" value = "0" />
+    <label id="RejectButtonLabel2" for="RejectButton2"></label>
+	</div>';
+			echo "</p><br/>";
+		
+			continue;
+		
 		}
 		echo form_input(array('name' => $key, 'class' => 'required'));
 		echo '</p>';

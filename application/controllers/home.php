@@ -45,7 +45,7 @@ class home extends CI_Controller {
 				'admin_mobile'	 	=> $_POST['admin_mobile']
 		);
 		$this->db->insert('la_admins',$att);
-		redirect('home','refresh');
+		redirect('home/c_panel/la_admins','refresh');
 		
 	
 	}
@@ -66,7 +66,7 @@ class home extends CI_Controller {
 				'lancer_skills'	 	=> $_POST['lancer_skills']
 		);
 		$this->db->insert('la_lancers',$att);
-		redirect('home','refresh');	
+		redirect('home/c_panel/la_lancers','refresh');	
 	}
 	
 	//////////////////////////
@@ -96,10 +96,12 @@ class home extends CI_Controller {
 				'pr_obj' 		=> $_POST['pr_obj'],
 				'pr_desc' 		=> $_POST['pr_desc'],
 				'pr_attach' 	=> $_POST['pr_attach'],
-				'pr_lancerid' 	=> $_POST['pr_lancerid']
+				'pr_lancerid' 	=> $_POST['pr_lancerid'],
+				'pr_admincuragree' => $_POST['pr_admincuragree'],
+				'pr_admindlagree' => $_POST['pr_admindlagree']
 		);
 		$this->db->insert('la_projects',$att);
-		redirect('home','refresh');
+		redirect('home/c_panel/la_projects','refresh');
 	
 	
 	}
@@ -122,8 +124,24 @@ class home extends CI_Controller {
 		);
 		$this->db->where('lancer_id',$lancer_past_id);
 		$this->db->update('la_lancers', $att1);
-		redirect('home','refresh');
+		redirect('home/c_panel/la_lancers','refresh');
 		
+	}
+	
+	//////////////////
+	public function modify_admin() {
+		$admin_past_id = $_POST['hidden_past_admin_name'];
+		$att1 = array(
+				'admin_name' 		=> $_POST ['admin_name'],
+				'admin_username'	=> $_POST ['admin_username'],
+				'admin_password'	=> $_POST ['admin_password'],
+				'admin_email'		=> $_POST ['admin_email'],
+				'admin_mobile'		=> $_POST ['admin_mobile']
+		);
+		$this->db->where('admin_id',$admin_past_id);
+		$this->db->update('la_admins', $att1);
+		redirect('home/c_panel/la_admins','refresh');
+	
 	}
 	
 	////////////////
@@ -137,7 +155,7 @@ class home extends CI_Controller {
 				$this->delete_query( $table_name, $item_id, $check);
 			}
 		}
-		redirect('home','refresh');
+		redirect('home/c_panel/'.$table_name,'refresh');
 	}
 	//////////////////
 	private function check_isvalidated(){

@@ -50,7 +50,7 @@ if($table_data!='main')
 							name="check_list[]" value=\''. $row->admin_id .'\'/>'
 							,$row->admin_name, $row->admin_username, $row->admin_password, $row->admin_email
 							, $row->admin_mobile,							
-							'<span class=\'modify_admin_button\' id='.$row->admin_id.'>Modify</span>'
+							'<span class=\'modify_admin\' id='.$row->admin_id.'>Modify</span>'
 					);
 
 					break;
@@ -67,11 +67,17 @@ if($table_data!='main')
 				case 'la_projects':
 					$lancer_name_query = $this->HomeModel->get_where('la_lancers',
 										 array('lancer_id' => $row->pr_lancerid));
+					$agreement = (bool)$row->pr_admincuragree && (bool)$row->pr_admindlagree &&
+							(bool)$row->pr_lancerdlagree && (bool)$row->pr_lancercuragree;
+					if($agreement != 1)
+						$agreement ='No';
+					else $agreement = 'Yes';
+					
 					$lancer_name = $lancer_name_query->row();
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->pr_id .'\' />',
 							$row->pr_title,$row->pr_requires,
-							$row->pr_dl, $row->pr_curagree && $row->pr_dlagree, 
+							$row->pr_dl, $agreement, 
 							$lancer_name->lancer_name,
 							'<span class=\'project_details_button\' id='.$row->pr_id.'>Details</span>',		
 							'<span id = '.$row->pr_id.' class=\'modify_project\'>Modify</span>'
