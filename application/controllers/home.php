@@ -13,15 +13,30 @@ class home extends CI_Controller {
 		
 	}
 	
-	public function c_panel($table_data){
+	public function c_panel($table_data,$project_id = ''){
 		$data ['table_data'] = $table_data;
-		
+		$data['project_id'] = $project_id;
 		$this->load->view('header');
 		$this->load->view('content', $data);
 		$this->load->view('footer');
 		
 	}
 	
+	public function add_comment(){
+		$datestring = "%Y/%m/%d - %h:%i %a";
+		$time = time();
+		$att = array(
+			'co_comment' => $_POST['co_comment'],
+			'co_userid' => $_POST['co_userid'],
+			'co_projectid' => $_POST['co_projectid'],
+			'co_date' => mdate($datestring, $time)
+				
+				);
+		$this->db->insert('la_comments', $att);
+		redirect(base_url().'home/c_panel/project/'.$att['co_projectid'],'refresh');
+	}
+	
+
 	
 	////////////////////
 	public function delete_query($table, $where, $value)
@@ -38,13 +53,14 @@ class home extends CI_Controller {
 	public function add_admin(){
 	
 		$att = array(
-				'admin_name' 		=> $_POST['admin_name'],
-				'admin_username' 	=> $_POST['admin_username'],
-				'admin_password' 	=> $_POST['admin_password'],
-				'admin_email' 		=> $_POST['admin_email'],
-				'admin_mobile'	 	=> $_POST['admin_mobile']
+				'user_name' 		=> $_POST['admin_name'],
+				'user_username' 	=> $_POST['admin_username'],
+				'user_password' 	=> $_POST['admin_password'],
+				'user_email' 		=> $_POST['admin_email'],
+				'user_mobile'	 	=> $_POST['admin_mobile'],
+				'user_role' 		=>'admin'
 		);
-		$this->db->insert('la_admins',$att);
+		$this->db->insert('la_users',$att);
 		redirect('home/c_panel/la_admins','refresh');
 		
 	
@@ -54,33 +70,34 @@ class home extends CI_Controller {
 	public function add_lancer(){
 	
 		$att = array(
-				'lancer_name' 		=> $_POST['lancer_name'],
-				'lancer_username' 	=> $_POST['lancer_username'],
-				'lancer_password' 	=> $_POST['lancer_password'],
-				'lancer_email' 		=> $_POST['lancer_email'],
-				'lancer_mobile' 	=> $_POST['lancer_mobile'],
-				'lancer_country' 	=> $_POST['lancer_country'],
-				'lancer_city' 		=> $_POST['lancer_city'],
-				'lancer_paymethod' 	=> $_POST['lancer_paymethod'],
-				'lancer_level' 		=> $_POST['lancer_level'],
-				'lancer_skills'	 	=> $_POST['lancer_skills']
+				'user_name' 		=> $_POST['lancer_name'],
+				'user_username' 	=> $_POST['lancer_username'],
+				'user_password' 	=> $_POST['lancer_password'],
+				'user_email' 		=> $_POST['lancer_email'],
+				'user_mobile' 	=> $_POST['lancer_mobile'],
+				'user_country' 	=> $_POST['lancer_country'],
+				'user_city' 		=> $_POST['lancer_city'],
+				'user_paymethod' 	=> $_POST['lancer_paymethod'],
+				'user_level' 		=> $_POST['lancer_level'],
+				'user_skills'	 	=> $_POST['lancer_skills'],
+				'user_role'			=> 'user'
 		);
-		$this->db->insert('la_lancers',$att);
+		$this->db->insert('la_users',$att);
 		redirect('home/c_panel/la_lancers','refresh');	
 	}
 	
 	//////////////////////////
 	public function get_lancer(){
-		$lancer_id = $_POST['lancer_id'];
-		$lancer_query = $this->HomeModel->get_where('la_lancers',array('lancer_id'=>$lancer_id));
+		$lancer_id = $_POST['user_id'];
+		$lancer_query = $this->HomeModel->get_where('la_users',array('user_id'=>$lancer_id));
 		echo json_encode($lancer_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
 	
 	}
 	
 	//////////////////////////
 	public function get_admin(){
-		$admin_id = $_POST['admin_id'];
-		$admin_query = $this->HomeModel->get_where('la_admins',array('admin_id'=>$admin_id));
+		$admin_id = $_POST['user_id'];
+		$admin_query = $this->HomeModel->get_where('la_users',array('user_id'=>$admin_id));
 		echo json_encode($admin_query->result(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
 	
 	}
@@ -95,10 +112,9 @@ class home extends CI_Controller {
 				'pr_dl' 		=> $_POST['pr_dl'],
 				'pr_obj' 		=> $_POST['pr_obj'],
 				'pr_desc' 		=> $_POST['pr_desc'],
-				'pr_attach' 	=> $_POST['pr_attach'],
 				'pr_lancerid' 	=> $_POST['pr_lancerid'],
-				'pr_admincuragree' => $_POST['pr_admincuragree'],
-				'pr_admindlagree' => $_POST['pr_admindlagree']
+				'pr_admincuragree'	=> $_POST['pr_admincuragree'],
+				'pr_admindlagree'	=> $_POST['pr_admindlagree']
 		);
 		$this->db->insert('la_projects',$att);
 		redirect('home/c_panel/la_projects','refresh');
@@ -111,19 +127,19 @@ class home extends CI_Controller {
 	public function modify_lancer() {
 		$lancer_past_id = $_POST['hidden_past_lancer_name'];
 		$att1 = array(
-				'lancer_name' 		=> $_POST ['lancer_name'],
-				'lancer_username'	=> $_POST ['lancer_username'],
-				'lancer_password'	=> $_POST ['lancer_password'],
-				'lancer_email'		=> $_POST ['lancer_email'],
-				'lancer_mobile'		=> $_POST ['lancer_mobile'],
-				'lancer_country'	=> $_POST ['lancer_country'],
-				'lancer_city'		=> $_POST ['lancer_city'],
-				'lancer_paymethod'	=> $_POST ['lancer_paymethod'],
-				'lancer_skills'		=> $_POST ['lancer_skills'],
-				'lancer_level'		=> $_POST ['lancer_level']
+				'user_name' 		=> $_POST ['lancer_name'],
+				'user_username'	=> $_POST ['lancer_username'],
+				'user_password'	=> $_POST ['lancer_password'],
+				'user_email'		=> $_POST ['lancer_email'],
+				'user_mobile'		=> $_POST ['lancer_mobile'],
+				'user_country'	=> $_POST ['lancer_country'],
+				'user_city'		=> $_POST ['lancer_city'],
+				'user_paymethod'	=> $_POST ['lancer_paymethod'],
+				'user_skills'		=> $_POST ['lancer_skills'],
+				'user_level'		=> $_POST ['lancer_level']
 		);
-		$this->db->where('lancer_id',$lancer_past_id);
-		$this->db->update('la_lancers', $att1);
+		$this->db->where('user_id',$lancer_past_id);
+		$this->db->update('la_users', $att1);
 		redirect('home/c_panel/la_lancers','refresh');
 		
 	}
@@ -138,8 +154,8 @@ class home extends CI_Controller {
 				'admin_email'		=> $_POST ['admin_email'],
 				'admin_mobile'		=> $_POST ['admin_mobile']
 		);
-		$this->db->where('admin_id',$admin_past_id);
-		$this->db->update('la_admins', $att1);
+		$this->db->where('user_id',$admin_past_id);
+		$this->db->update('la_users', $att1);
 		redirect('home/c_panel/la_admins','refresh');
 	
 	}
@@ -148,14 +164,23 @@ class home extends CI_Controller {
 	public function delete_list() {
 		$table_name = $_POST ['hidden_table_name'];
 		$item_id    = $_POST ['hidden_item_id'];
+		if($table_name == 'la_admins' || $table_name == 'la_lancers')
+			$table = 'la_users';
+		else $table = $table_name;
 		if(!empty($_POST['check_list']))
 		{
 			foreach ( $_POST ['check_list'] as $check)
 			{
-				$this->delete_query( $table_name, $item_id, $check);
+				$this->delete_query( $table, $item_id, $check);
 			}
 		}
 		redirect('home/c_panel/'.$table_name,'refresh');
+	}
+	
+	public function delete_comment($comment_id,$project_id){
+		$this->delete_query('la_comments','co_id',$comment_id);
+		$this->delete_query('la_attachments','at_commentid',$comment_id);
+		redirect('home/c_panel/project/'.$project_id,'refresh');
 	}
 	//////////////////
 	private function check_isvalidated(){

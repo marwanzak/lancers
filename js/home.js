@@ -1,5 +1,5 @@
 var base_url="http://localhost/lancers/home/";
-
+//
 $(document).ready(function()
 		{
 

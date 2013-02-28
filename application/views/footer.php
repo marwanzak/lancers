@@ -88,7 +88,6 @@
 						  'pr_admindlagree' => 'Deadline agreement',
 						  'pr_obj'			=> 'Objectives',
 						  'pr_desc'			=> 'Description',
-						  'pr_attach'		=> 'Attachments',
 						  'pr_lancerid'		=> 'Lancer'
 						);
 

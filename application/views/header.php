@@ -1,8 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="UTF-8" />
 <title>Lancers!</title>
+<script src="<?= base_url()?>js/jquery.js"></script>
+<script src="<?= base_url();?>js/jquery-ui-1.10.1.custom.min.js" ></script>
+<script src="<?= base_url()?>js/home.js"  ></script>
+<script src="<?= base_url();?>js/jquery.uploadify.min.js" ></script>
+<script  
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+	
+<link rel="stylesheet"
+	href="<?= base_url(); ?>css/theme/jquery-ui-1.10.1.custom.min.css"
+	type="text/css" />
+<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>css/uploadify.css"/>
 
 <link rel="stylesheet" href="<?= base_url(); ?>css/style.css"
 	type="text/css" />
@@ -12,18 +23,33 @@
 	
 <!--[if IE 6]><link rel="stylesheet" href="<?= base_url()?>css/style.ie6.css" type="text/css" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" href="<?= base_url()?>css/style.ie7.css" type="text/css"/><![endif]-->
-	
-<link rel="stylesheet"
-	href="<?= base_url(); ?>css/theme/jquery-ui-1.10.1.custom.min.css"
-	type="text/css" />
-	
-<script type="text/javascript" src="<?= base_url()?>js/jquery.js"></script>
-<script type="text/javascript" src="<?= base_url()?>js/home.js"></script>
-<script src="<?= base_url();?>js/jquery-ui-1.10.1.custom.min.js"></script>
 
-<script language="javascript" type="text/javascript"
-	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
-	
+		<script type="text/javascript">
+		<?php $timestamp = time();?>
+		$(function() {
+			$('#file_upload').uploadify({
+				'formData'     : {
+					'timestamp' : '<?php echo $timestamp;?>',
+					'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+				},
+				'fileTypeDesc' : 'Image Files',
+				'fileTypeExts' : '*.gif; *.jpg; *.png', 
+				'swf'      : '<?= base_url() ?>uploadify/uploadify.swf',
+				'uploader' : '<?= base_url() ?>uploadify/uploadify.php',
+				'onUploadComplete' : function(file) {
+					
+				var filename= file.name;
+			$('#st_pic').attr("src",'<?= base_url()?>st_pics/' + filename.split('.',1).pop() + '_' + <?= $timestamp;?>+ '.' +filename.split('.',2).pop());
+			$('<input/>').attr({ type: 'text', name: 'st_pic[]', value: '<?= base_url()?>files/' 
+				+filename.split('.',1).pop() + '_' + <?= $timestamp;?>+ '.' +filename.split('.',2).pop()
+			}).appendTo("#comment_insert_form");
+			
+	        } 
+				
+			});
+		});
+	</script>
+
 </head>
 <body>
 	<div id="art-page-background-middle-texture">
@@ -86,7 +112,7 @@
 
 					} ?>
 
-
+					
 						</ul>
 					</div>
 					<div class="art-content-layout">

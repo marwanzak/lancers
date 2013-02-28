@@ -1,8 +1,10 @@
 <?php 
-if($table_data!='main')
-	if($this->session->userdata('user_role')=='admin')
+if($table_data!='main' && $table_data!= 'project')
+{
+	$user=$this->session->userdata('user_role');
+	if($user=='admin')
 	{
-		
+
 		$att = array('id' => 'table_form');
 		echo form_open('home/delete_list', $att);
 		$tmpl = array ( 'table_open'  => '<table class = "mytable"
@@ -18,7 +20,7 @@ if($table_data!='main')
 						'Full Name','Username','Password','Email','mobile','Modify'
 								);
 								echo form_hidden('hidden_table_name',$table_data);
-								echo form_hidden('hidden_item_id','admin_id');
+								echo form_hidden('hidden_item_id','user_id');
 								break;
 			case 'la_lancers':
 				$this->table->set_heading('<input type="checkbox"
@@ -26,69 +28,77 @@ if($table_data!='main')
 						'Full Name','Email','Skills','Level','More details','Modify'
 								);
 								echo form_hidden('hidden_table_name',$table_data);
-								echo form_hidden('hidden_item_id','lancer_id');
+								echo form_hidden('hidden_item_id','user_id');
 								break;
 			case 'la_projects':
 				$this->table->set_heading('<input type="checkbox"
 						name="projects_check" value="all" />',
-						'Title','Requirements','Deadline','Agreement','Freelancer','More details','Modify'
+						'Title','Requirements','Deadline','Agreement','Freelancer','Show project'
 								);
 								echo form_hidden('hidden_table_name',$table_data);
 								echo form_hidden('hidden_item_id','pr_id');
 								break;
-			
+									
 			case 'main':
 
-										break;
+				break;
 
 		}
-		$Q=$this->db->get($table_data);
-		foreach ($Q-> result() as $row){
+
 			switch ($table_data){
 				case 'la_admins':
+					$this->db->where('user_role','admin');
+					$Q=$this->db->get('la_users');
+					foreach ($Q-> result() as $row){
+							
 					$this->table->add_row('<input type="checkbox"
-							name="check_list[]" value=\''. $row->admin_id .'\'/>'
-							,$row->admin_name, $row->admin_username, $row->admin_password, $row->admin_email
-							, $row->admin_mobile,							
-							'<span class=\'modify_admin\' id='.$row->admin_id.'>Modify</span>'
-					);
+							name="check_list[]" value=\''. $row->user_id .'\'/>'
+									,$row->user_name, $row->user_username, $row->user_password, $row->user_email
+									, $row->user_mobile,
+									'<span class=\'modify_admin\' id='.$row->user_id.'>Modify</span>'
+											);
+					}
 
 					break;
 				case 'la_lancers':
+					$this->db->where('user_role','user');
+					$Q=$this->db->get('la_users');
+					foreach ($Q-> result() as $row){
 					$this->table->add_row('<input type="checkbox"
-							name="check_list[]" value=\''. $row->lancer_id .'\'/>',
-							$row->lancer_name,$row->lancer_email,
-							$row->lancer_skills, $row->lancer_level,
-							'<span class=\'lancer_details_button\' id='.$row->lancer_id.'>Details</span>',
-							'<span id = '.$row->lancer_id.' class=\'modify_lancer\'>Modify</span>'
-					);
+							name="check_list[]" value=\''. $row->user_id .'\'/>',
+							$row->user_name,$row->user_email,
+							$row->user_skills, $row->user_level,
+							'<span class=\'lancer_details_button\' id='.$row->user_id.'>Details</span>',
+							'<span id = '.$row->user_id.' class=\'modify_lancer\'>Modify</span>'
+									);
+					}
 
 					break;
 				case 'la_projects':
-					$lancer_name_query = $this->HomeModel->get_where('la_lancers',
-										 array('lancer_id' => $row->pr_lancerid));
+					$Q=$this->db->get($table_data);
+					foreach ($Q-> result() as $row){
+					$lancer_name_query = $this->HomeModel->get_where('la_users',
+					array('user_id' => $row->pr_lancerid,));
 					$agreement = (bool)$row->pr_admincuragree && (bool)$row->pr_admindlagree &&
-							(bool)$row->pr_lancerdlagree && (bool)$row->pr_lancercuragree;
+					(bool)$row->pr_lancerdlagree && (bool)$row->pr_lancercuragree;
 					if($agreement != 1)
 						$agreement ='No';
 					else $agreement = 'Yes';
-					
+						
 					$lancer_name = $lancer_name_query->row();
 					$this->table->add_row('<input type="checkbox"
 							name="check_list[]" value=\''. $row->pr_id .'\' />',
 							$row->pr_title,$row->pr_requires,
-							$row->pr_dl, $agreement, 
-							$lancer_name->lancer_name,
-							'<span class=\'project_details_button\' id='.$row->pr_id.'>Details</span>',		
-							'<span id = '.$row->pr_id.' class=\'modify_project\'>Modify</span>'
-							
+							$row->pr_dl, $agreement,
+							$lancer_name->user_name,
+							anchor(base_url().'home/c_panel/project/'.$row->pr_id,'Show')
 					);
-
+					}
 					break;
 
 				case 'main':
 					$this->table->add_row(	);
-									break;
+					break;
 
 
 
@@ -96,11 +106,11 @@ if($table_data!='main')
 					echo "";
 			}
 		}
-		
+
 		echo $this->table->generate();
 		echo form_submit('submit','Delete');
 		echo form_close();
-		
+}
 		//insert level form
 		if($table_data=='la_admins')
 		{
@@ -112,29 +122,94 @@ if($table_data!='main')
 		{
 			echo "<button class='add_lancer add'>Add lancer</button>";
 		}
-		
+
 		//insert room form
 		if($table_data=='la_projects')
 		{
 			echo "<button class='add_project add'>Add project</button>";
-				
-		}
-		
-		
-	}
-
-
-		//insert report form
-		if($table_data=='aq_reports')
-		{
-
 
 		}
-
-
 
 
 	
+
+
+	if($table_data=='main')
+	{
+
+	}
+
+	if($table_data == 'project')
+	{
+		$project_query = $this->HomeModel->get_where('la_projects',array('pr_id'=>$project_id));
+
+		foreach($project_query->result() as $row)
+		{
+			$lancer_name_query = $this->HomeModel->get_where('la_users',
+					array('user_id' => $row->pr_lancerid));
+			$lancer_name = $lancer_name_query->row();
+			if($row->pr_deliver==1)  $delivered = 'YES';	else $delivered = "NO";
+			if($row->pr_paymented==1) $paymented = "YES"; else $paymented = "NO";
+			$project_array = array("Title" => $row->pr_title,
+					"Lancer" => $lancer_name->user_name,
+					"Requirements"	=> $row->pr_requires,
+					"Currency"		=> $row->pr_currency,
+					"Start date"	=> $row->pr_sd,
+					"End date"		=> $row->pr_ed,
+					"Deadline"		=> $row->pr_dl,
+					"Objectives"	=> $row->pr_obj,
+					"Description"	=> $row->pr_desc,
+					"Admin currency approval"	=> $row->pr_admincuragree,
+					"Admin deadline approval"	=> $row->pr_admindlagree,
+					"Lancer currency approval"	=> $row->pr_lancercuragree,
+					"Lancer deadline approval"	=> $row->pr_lancerdlagree,
+					"Delivered?" => $delivered,
+					"Paymented?" => $paymented,
+					"Last update" => $row->pr_lastupdated
+					);
+
+			foreach($project_array as $key => $value)
+			{
+				echo $key . ": " . $value . "<br/>";
+
+			}
+			$comments=json_decode($this->HomeModel->get_comments($row->pr_id));
+			foreach($comments as $comment)
+			{
+				$user_query = $this->HomeModel->get_where('la_users',
+						array('user_id' => $comment->co_userid));
+				$user = $user_query->row();
+				echo "<div style = 'background-color:#bbb;'>";
+				echo "By: " . "<span style='color:red;'>" . $user->user_name .
+				 "</span>" . " at: " . $comment->co_date;
+				echo "<span style='color:blue; float:right;'><a href='".base_url()."home/delete_comment/".$comment->co_id."/".$row->pr_id."'>delete</a></span>";
+				echo "<p style='background-color:#eee;'>" . $comment->co_comment . "</p>";
+				echo "</div><br/>";
+			}
+			echo "<div style='background-color:#ccc;'>";
+			$att=array('id'=>'comment_insert_form');
+			$user_id=$this->session->userdata('user_id');
+			echo '<div id="upload_div"><form>
+					<input id="file_upload" name="file_upload" type="file" multiple="false"/>
+					</form></div>';
+					
+			echo form_open('home/add_comment',$att);
+			echo form_hidden('co_projectid',$row->pr_id);
+			echo form_hidden('co_userid',$user_id);	
+			echo "Add comment<br/>";
+			echo "<textarea rows='10' cols='45' name='co_comment' ></textarea><br/>";
+			echo "Add attachment<br/>";
+			echo form_submit('submit','Add comment');
+			echo form_close();
+			echo "</div>";
+		}
+			
+	}
+
+
+
+
+
 
 
 	if($this->session->userdata('user_role')=='user')
@@ -253,10 +328,10 @@ if($table_data!='main')
 		if($table_data=='aq_marks')
 		{
 			echo "<button class='add_mark'>إضافة علامة</button>";
-				
+
 
 		}
 
 	}
 
-                             
+	 
