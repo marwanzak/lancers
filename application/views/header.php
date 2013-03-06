@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <title>Lancers!</title>
-<script src="<?= base_url()?>js/jquery.js"></script>
-<script src="<?= base_url();?>js/jquery-ui-1.10.1.custom.min.js" ></script>
-<script src="<?= base_url()?>js/home.js"  ></script>
-<script src="<?= base_url();?>js/jquery.uploadify.min.js" ></script>
-<script  
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="<?= base_url()?>js/jquery.js"></script>
+<script type="text/javascript" src="<?= base_url();?>js/jquery-ui-1.10.1.custom.min.js" ></script>
+<script type="text/javascript" src="<?= base_url();?>js/jquery.uploadify.min.js" ></script>
+<script  type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="<?= base_url()?>js/home.js"></script>
 	
 <link rel="stylesheet"
 	href="<?= base_url(); ?>css/theme/jquery-ui-1.10.1.custom.min.css"
@@ -20,6 +21,7 @@
 	
 <link rel="stylesheet" href="<?= base_url(); ?>css/home.css"
 	type="text/css" />
+
 	
 <!--[if IE 6]><link rel="stylesheet" href="<?= base_url()?>css/style.ie6.css" type="text/css" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" href="<?= base_url()?>css/style.ie7.css" type="text/css"/><![endif]-->
@@ -33,22 +35,25 @@
 					'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
 				},
 				'fileTypeDesc' : 'Image Files',
-				'fileTypeExts' : '*.gif; *.jpg; *.png', 
 				'swf'      : '<?= base_url() ?>uploadify/uploadify.swf',
 				'uploader' : '<?= base_url() ?>uploadify/uploadify.php',
 				'onUploadComplete' : function(file) {
 					
 				var filename= file.name;
-			$('#st_pic').attr("src",'<?= base_url()?>st_pics/' + filename.split('.',1).pop() + '_' + <?= $timestamp;?>+ '.' +filename.split('.',2).pop());
-			$('<input/>').attr({ type: 'text', name: 'st_pic[]', value: '<?= base_url()?>files/' 
-				+filename.split('.',1).pop() + '_' + <?= $timestamp;?>+ '.' +filename.split('.',2).pop()
-			}).appendTo("#comment_insert_form");
-			
-	        } 
+				var new_filename = filename.split('.',1).pop() + '_' + <?= $timestamp;?>+ '.' +filename.split('.',2).pop();
+			$('<input/>').attr({ type: 'hidden', name: 'comment_files[]', value: '<?= base_url()?>files/' 
+				+ new_filename
+			}).appendTo("#comment_td");		
+			$("<a>"+filename+"</a><br/>").attr({ href: '<?= base_url()?>files/' + new_filename, target: "_blank"}).appendTo("#comment_td");
+	        }
+		         
 				
 			});
 		});
 	</script>
+	
+	
+
 
 </head>
 <body>
@@ -99,13 +104,13 @@
 
 							<?php 
 							break;
-					case 'lancer':	?>
-							<li><a href="<?= base_url(); ?>Home/c_panel/home"><span class="l"></span><span
+					case 'user':	?>
+							<li><a href="<?= base_url(); ?>Home/c_panel/main"><span class="l"></span><span
 									class="r"></span><span class="t"> Main </span> </a>
 							</li>
-							<li><a href="<?= base_url(); ?>Home/c_panel/la_lancers"><span
+							<li><a href="<?= base_url(); ?>Home/c_panel/la_projects"><span
 									class="l"></span><span class="r"></span><span class="t">
-										Projects </span> </a>
+										Projects </span></a>
 							</li>
 							<?php
 							break;
@@ -115,10 +120,24 @@
 					
 						</ul>
 					</div>
-					<div class="art-content-layout">
-						<div class="art-content-layout-row">
-							<div class="art-layout-cell art-content">
-								<div class="art-post">
-									<div class="art-post-body">
-										<div class="art-post-inner art-article">
-											<div class="art-postcontent">
+					
+<div class="art-content-layout">
+	<div class="art-content-layout-row">
+		<div class="art-layout-cell art-content">
+			<div class="art-post">
+				<div class="art-post-tl"></div>
+				<div class="art-post-tr"></div>
+				<div class="art-post-bl"></div>
+				<div class="art-post-br"></div>
+				<div class="art-post-tc"></div>
+				<div class="art-post-bc"></div>
+				<div class="art-post-cl"></div>
+				<div class="art-post-cr"></div>
+				<div class="art-post-cc"></div>
+				<div class="art-post-body">
+					<div class="art-post-inner art-article">
+						<h2 class="art-postheader">
+							<? ?>
+						</h2>
+						<div class="art-postcontent">
+					

@@ -79,6 +79,22 @@ class HomeModel extends CI_Model {
 		// then return false.
 		return false;
 	}
+	public function approvalbutton($name,$value,$label)
+	{
+		
+		if ($value == "NO") $value ='0';
+		if ($value == "YES") $value = '1';
+		if($value == '1'){ $yes = 'checked'; $no = '';}
+		elseif($value == '0') {$yes = ''; $no = 'checked';}
+		echo "<td><label for ='".$name."'>".$label.": "."</label>"."</td><td>".
+				'<div id='.$name.'>
+						<input type="radio" id="ApproveButton_'.$name.'" name="'.$name.'" value = "1" '. $yes .' />
+						<label id="ApproveButtonLabel_'.$name.'" for="ApproveButton_'.$name.'"></label>
 	
+						<input type="radio" id="RejectButton_'.$name.'" name="'.$name.'" value = "0"'. $no .' />
+						<label id="RejectButtonLabel_'.$name.'" for="RejectButton_'.$name.'"></label>
+						</div></td>';
+		
+	}
 
 }

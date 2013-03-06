@@ -22,11 +22,11 @@ if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
 	$targetFile = rtrim($targetPath,'/') . '/' . $newName;
 	
 	// Validate the file type
-	$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
+	$fileTypes = array(''); // File extensions
 	$fileParts = pathinfo($_FILES['Filedata']['name']);
 	
-	if (in_array($fileParts['extension'],$fileTypes)) {
-		move_uploaded_file($tempFile,$targetFile);
+	if (move_uploaded_file($tempFile,$targetFile)) {
+		
 		echo '1';
 	} else {
 		echo 'Invalid file type.';

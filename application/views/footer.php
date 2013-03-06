@@ -1,4 +1,3 @@
-
 </div>
 <div class="cleared"></div>
 </div>
@@ -25,11 +24,11 @@
 	<?php 
 	$att=array('id'=>'admin_insert_form');
 
-	$input_values = array('admin_name' 	   => 'Full Name',
-			'admin_username' => 'Username',
-			'admin_password' => 'Password',
-			'admin_email'    => 'Email',
-			'admin_mobile'   => 'Mobile'
+	$input_values = array('user_name' 	   => 'Full Name',
+			'user_username' => 'Username',
+			'user_password' => 'Password',
+			'user_email'    => 'Email',
+			'user_mobile'   => 'Mobile'
 	);
 
 	echo form_open('home/add_admin',$att);
@@ -50,16 +49,16 @@
 	<?php 
 	$att=array('id'=>'lancer_insert_form');
 
-	$input_values = array('lancer_name'			=> 'Full Name',
-						  'lancer_username'		=> 'Username',
-						  'lancer_password'		=> 'Password',
-						  'lancer_email'		=> 'Email',
-						  'lancer_mobile'		=> 'Mobile',
-						  'lancer_country'		=> 'Country',
-						  'lancer_city'			=> 'City',
-						  'lancer_paymethod'	=> 'Payment method',
-						  'lancer_skills'		=> 'Lancer skills',
-						  'lancer_level'		=> 'Lancer level'
+	$input_values = array('user_name'			=> 'Full Name',
+						  'user_username'		=> 'Username',
+						  'user_password'		=> 'Password',
+						  'user_email'		=> 'Email',
+						  'user_mobile'		=> 'Mobile',
+						  'user_country'		=> 'Country',
+						  'user_city'			=> 'City',
+						  'user_paymethod'	=> 'Payment method',
+						  'user_skills'		=> 'Lancer skills',
+						  'user_level'		=> 'Lancer level'
 						);
 
 	echo form_open('home/add_lancer',$att);
@@ -193,10 +192,5 @@
 			?>
 
 </div>
-
-
-
-
-
 </body>
 </html>

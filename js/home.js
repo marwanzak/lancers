@@ -2,7 +2,7 @@ var base_url="http://localhost/lancers/home/";
 //
 $(document).ready(function()
 		{
-
+	$('#project_accordion').hide();
 	add_dialog('#add_admin_dialog','.add_admin');
 	add_dialog('#add_lancer_dialog','.add_lancer');
 	add_dialog('#add_project_dialog','.add_project');
@@ -11,8 +11,21 @@ $(document).ready(function()
 	 $(function() {
 		 $( "#currencyagreement" ).buttonset();
 		 $( "#deadlineagreement" ).buttonset();
+		 $( "#pr_admindlagree" ).buttonset();
+		 $( "#pr_admincuragree" ).buttonset();
+		 $( "#pr_lancercuragree" ).buttonset();
+		 $( "#pr_lancerdlagree" ).buttonset();
+		 $( "#pr_deliver" ).buttonset();
+		 $( "#pr_paymented" ).buttonset();
+
 
 		 });
+	 $(function() {
+		 $( ".date_input" ).datepicker();
+		 });
+	 $('#project_details_span').click(function(){
+		$('#project_accordion').toggle('blind',500); 
+	 });
 	// lancer details array from the lancer table in the database.
 	var lancer_array = ['Full name', 'Username',
 	                    'Password', 'Email',
@@ -27,13 +40,14 @@ $(document).ready(function()
 		$(".modify_submit").remove();
 
 		$.post(base_url +'get_lancer',
-				{lancer_id:this.id},		
+				{user_id:this.id},		
 				function(data){
 					var jsonStr = JSON.stringify(data);
 					jsonStr = jsonStr.replace('[','');
 					jsonStr = jsonStr.replace(']','');
 					var Obj = jQuery.parseJSON(jsonStr);
-					delete Obj['lancer_id'];
+					delete Obj['user_id'];
+					delete Obj['user_role'];
 					$('.lancer_class').remove();
 					var j=0;
 
@@ -44,7 +58,7 @@ $(document).ready(function()
 								lancer_array[j] + "</label>"
 						);
 						$('<input/>').attr({type: 'text',
-							class: 'lancer_class',
+							'class': 'lancer_class',
 							name: key, value: lancer_value})
 							.appendTo("#lancer_modify_form"
 							);
@@ -64,13 +78,16 @@ $(document).ready(function()
 		$(".modify_submit").remove();
 
 		$.post(base_url +'get_admin',
-				{admin_id:this.id},		
+				{user_id:this.id},		
 				function(data){
 					var jsonStr = JSON.stringify(data);
 					jsonStr = jsonStr.replace('[','');
 					jsonStr = jsonStr.replace(']','');
 					var Obj = jQuery.parseJSON(jsonStr);
-					delete Obj['admin_id'];
+					var admin_fields = ['user_id','user_country','user_city','user_paymethod','user_skills','user_level','user_role'];
+					$.each(admin_fields,function(key,value){
+					delete Obj[value];	
+					});
 					$('.admin_class').remove();
 					var j=0;
 
@@ -81,7 +98,7 @@ $(document).ready(function()
 								admin_array[j] + "</label>"
 						);
 						$('<input/>').attr({type: 'text',
-							class: 'admin_class',
+							'class': 'admin_class',
 							name: key, value: admin_value})
 							.appendTo("#admin_modify_form"
 							);
@@ -98,13 +115,13 @@ $(document).ready(function()
 
 	$('.lancer_details_button').click(function(){
 		$.post(base_url + 'get_lancer',
-				{lancer_id:this.id},		
+				{user_id:this.id},		
 				function(data){
 					var jsonStr = JSON.stringify(data);
 					jsonStr = jsonStr.replace('[','');
 					jsonStr = jsonStr.replace(']','');
 					var Obj = jQuery.parseJSON(jsonStr);
-					delete Obj['lancer_id'];
+					delete Obj['user_id'];
 					$('.lancer_class').remove();
 					var j=0;
 					$.each( Obj, function( key, value2 ) {
@@ -112,7 +129,7 @@ $(document).ready(function()
 						$('#lancer_details_dialog').append("<label class='lancer_class'>"+
 								lancer_array[j] + "</label>");
 						$('<input/>').attr({ type: 'text',
-							class: 'lancer_class',
+							'class': 'lancer_class',
 							name: key, value: value2,
 							disabled: 'disabled' })
 							.appendTo("#lancer_details_dialog");
@@ -123,6 +140,7 @@ $(document).ready(function()
 				},"json");	
 
 	});
+	
 		});
 
 //Open blank dialog function to add items to the database.
@@ -200,7 +218,7 @@ function modify_dialog_open(button, method, id, modifyclass, formid, modifyarray
 								modifyarray[j] + "</label>"
 						);
 						$('<input/>').attr({type: 'text',
-							class: modifyclass,
+							'class': modifyclass,
 							name: key, value: modify_value})
 							.appendTo(formid
 							);
