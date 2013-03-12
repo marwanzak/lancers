@@ -1,7 +1,7 @@
 <?php 
 if($table_data!='main' && $table_data!= 'project')
 {
-	
+
 	$user=$this->session->userdata('user_role');
 	if($user=='admin')
 	{
@@ -208,6 +208,17 @@ if($table_data!='main' && $table_data!= 'project')
 
 if($table_data=='main')
 {
+
+	echo "<div id = 'dropbox_container' class = 'con'>";
+	echo "<div id = 'dropbox_tree'></div>";
+	echo "<div id = 'dropbox_dash'></div>";
+	echo "<span class = 'span_button' id = 'upload_button'>Upload file</span>";
+	echo "<span class = 'span_button' id = 'create_button'>Create folder</span>";
+	echo "<span class = 'span_button' id = 'copy_button'>Copy</span>";
+	echo "<span class = 'span_button' id = 'move_button'>Move</span>";
+	echo "<span class = 'span_button' id = 'delete_button'>Delete</span>";
+	echo "<span class = 'span_button' id = 'download_button'>Download</span>";
+	echo "</div>";
 	$user_role = $this->session->userdata('user_role');
 	$user = ($user_role == 'admin'? 'admin' : 'lancer');
 	$user_id = $this->session->userdata('user_id');
@@ -217,7 +228,7 @@ if($table_data=='main')
 		$unseen_projects = $this->HomeModel->get_where('la_projects', array('pr_'.$user.'seen' => '0'));
 
 	if($unseen_projects->num_rows() > 0)
-		
+
 		foreach($unseen_projects->result() as $project)
 		{
 			echo "<div class = 'project_div'>";
@@ -233,7 +244,7 @@ if($table_data=='main')
 
 if($table_data == 'project')
 {
-	echo "<span id = 'project_details_span'>Project details</span>";
+	echo "<span id = 'project_details_span' class = 'span_button'>Project details</span>";
 	echo "<div id = 'project_accordion'>";
 	$user_role = $this->session->userdata('user_role');
 	$user = ($user_role == 'admin'? 'admin':'lancer');
@@ -277,142 +288,143 @@ if($table_data == 'project')
 				if ($i>1) echo "<tr>";
 				if($name == 'pr_requires' || $name == 'pr_desc' || $name == 'pr_obj')
 				{
-					echo "<tr><td><label for='".$name."'>".$label . ": " . "</label>"."</td><td colspan = '3'>" .
+					echo "<tr><td><label for='".$name."' class = 'project_details_label'>".$label . ": " . "</label>"."</td><td colspan = '3'>" .
 							"<textarea cols = '100' name = '" . $name . "'>".$value . "</textarea>" . "</td></tr>";
 
 				}
 				elseif($name == 'pr_sd' || $name == 'pr_ed' || $name == 'pr_dl')
 				{
-					echo "<td><label for='".$name."'>".$label . ": " ."</label>"."</td><td>".
+					echo "<td><label for='".$name."' class = 'project_details_label'>".$label . ": " ."</label>"."</td><td>".
 							form_input($name,$value,'class = date_input'). "</td>";
 				}
 				elseif($name == 'pr_admincuragree' || $name == 'pr_admindlagree' ||
-						$name == 'pr_lancercuragree' || $name == 'pr_lancerdlagree' ||
 						$name == 'pr_deliver' || $name == 'pr_paymented'
 				)
 				{
-					
+
 					$this->HomeModel->approvalbutton($name,$value,$label);
 
 				}
 				elseif($name == 'pr_lastupdated')
 				{
-					echo "<td><label for='".$name."'>".$label . ": " ."</label>"."</td><td>".
+					echo "<td><label for='".$name."' class = 'project_details_label'>".$label . ": " ."</label>"."</td><td>".
 							$value. "</td>";
 				}
 				elseif($name == 'pr_lancerid')
 				{
 					$lancers = $this->HomeModel->get_lancers();
-					echo "<td><label for='".$name."'>".$label . ": " ."</label>"."</td><td>".
+					echo "<td><label for='".$name."' class = 'project_details_label'>".$label . ": " ."</label>"."</td><td>".
 							form_dropdown($name,$lancers,$row->pr_lancerid) . "</td>";
 				}
+				elseif($name == 'pr_lancerdlagree' || $name == 'pr_lancercuragree'
+				)
+				break;
 				else
-					echo "<td><label for='".$name."'>".$label . ": " ."</label>"."</td><td>". form_input($name,$value). "</td>";
+					echo "<td><label for='".$name."' class = 'project_details_label'>".$label . ": " ."</label>"."</td><td>". form_input($name,$value). "</td>";
 				$i++;
 				if ($i>1) {
 					echo "</tr>"; $i=0;
 				}
 			}
 			if($user_role == "user")
-			{
 				foreach($project_array as $name => $input)
-					foreach($input as $label => $value)
-					{
-						if ($i>1) echo "<tr>";
-						if($name == 'pr_requires' || $name == 'pr_desc' || $name == 'pr_obj')
-						{
-							echo "<tr><td><label for='".$name."'>".$label . ": " . "</label>"."</td><td colspan = '3'>" .
-									"<textarea disabled cols = '100' name = '" . $name . "'>".$value . "</textarea>" . "</td></tr>";
-								
-						}
-						elseif($name == 'pr_lancercuragree' || $name == 'pr_lancerdlagree'
-						)
-						{
-							$label = explode(' ', $label);
-							$label = $label[1]. ' ' . $label[2];
-							$this->HomeModel->approvalbutton($name,$value,$label);
-								
-						}
-
-						elseif($name == 'pr_dl')
-						{
-							echo "<td><label for='".$name."'>".$label . ": " ."</label>"."</td><td>".
-									form_input($name,$value,'class = date_input'). "</td>";
-						}
-						elseif($name == 'pr_currency')
-						{
-							echo "<td><label for='".$name."'>".$label . ": " ."</label>"."</td><td>".
-									form_input($name,$value). "</td>";
-						}
-						elseif($name == 'pr_admindlagree' || $name == 'pr_admincuragree' ||
-								$name == 'pr_paymented' || $name == 'pr_deliver' ||
-								$name == 'pr_lancerid'
-						)
-						break;
-						else
-							echo "<td><label for='".$name."'>".$label . ": " ."</label>"."</td><td>". $value. "</td>";
-						$i++;
-						if ($i>1) {
-							echo "</tr>"; $i=0;
-						}
-							
-							
-					}
-			}
-			echo "<tr><td>".form_submit('Submit','Update')."</td></tr>";
-			echo "</table>";
-			echo form_close();
-			echo "</div>";
-
-			$comments=json_decode($this->HomeModel->get_comments($row->pr_id));
-			$user_id = $this->session->userdata('user_id');
-			echo "<div id ='comments_div'>";
-			foreach($comments as $comment)
-			{
-				$user_query = $this->HomeModel->get_where('la_users',
-						array('user_id' => $comment->co_userid));
-				$user = $user_query->row();
-				echo "<div class = 'comment_div'>";
-				echo "By: " . "<span style='color:red;'>" . $user->user_name .
-				"</span>" . " at: " . $comment->co_date;
-				if($comment->co_userid == $user_id)
-				echo "<span style='color:blue; float:right;'><a href='".base_url()."home/delete_comment/".$comment->co_id."/".$row->pr_id."'>delete</a></span>";
-				echo "<p>" . $comment->co_comment . "</p>";
-				$comment_attachs = $this->HomeModel->get_where('la_attachments', array('at_commentid' => $comment->co_id));
-				echo "<p>";
-				foreach($comment_attachs->result() as $attach)
+				foreach($input as $label => $value)
 				{
-					
-					$file_name = explode("_", basename($attach->at_attach));
-					$file_ext = explode (".", basename($attach->at_attach));
-					if($file_name[0] !='')
-					echo "<a href='" . $attach->at_attach . "' target = '_blank'>". $file_name[0]. '.'. $file_ext[1]. "</a> -- ";
+					if ($i>1) echo "<tr>";
+					if($name == 'pr_requires' || $name == 'pr_desc' || $name == 'pr_obj')
+					{
+						echo "<tr><td><label for='".$name."' class = 'project_details_label'>".$label . ": " . "</label>"."</td><td colspan = '3'>" .
+								"<textarea disabled cols = '100' name = '" . $name . "'>".$value . "</textarea>" . "</td></tr>";
+
+					}
+					elseif($name == 'pr_lancercuragree' || $name == 'pr_lancerdlagree'
+					)
+					{
+						$label = explode(' ', $label);
+						$label = $label[1]. ' ' . $label[2];
+						$this->HomeModel->approvalbutton($name,$value,$label);
+
+					}
+
+					elseif($name == 'pr_dl')
+					{
+						echo "<td><label for='".$name."' class = 'project_details_label'>".$label . ": " ."</label>"."</td><td>".
+								form_input($name,$value,'class = date_input'). "</td>";
+					}
+					elseif($name == 'pr_currency')
+					{
+						echo "<td><label for='".$name."' class = 'project_details_label'>".$label . ": " ."</label>"."</td><td>".
+								form_input($name,$value). "</td>";
+					}
+					elseif($name == 'pr_admindlagree' || $name == 'pr_admincuragree' ||
+							$name == 'pr_paymented' || $name == 'pr_deliver' ||
+							$name == 'pr_lancerid'
+					)
+					break;
+					else
+						echo "<td><label for='".$name."' class = 'project_details_label'>".$label . ": " ."</label>"."</td><td>". $value. "</td>";
+					$i++;
+					if ($i>1) {
+						echo "</tr>"; $i=0;
+					}
+						
+						
 				}
-				echo "</p></div>";
-			}
-			echo "<div style='background-color:#ccc;'>";
-			$att=array('id'=>'comment_insert_form');
-			$user_id=$this->session->userdata('user_id');
+					
+				echo "<tr><td>".form_submit('Submit','Update')."</td></tr>";
+				echo "</table>";
+				echo form_close();
+				echo "</div>";
+
+				$comments=json_decode($this->HomeModel->get_comments($row->pr_id));
+				$user_id = $this->session->userdata('user_id');
+				echo "<div id ='comments_div'>";
+				foreach($comments as $comment)
+				{
+					$user_query = $this->HomeModel->get_where('la_users',
+							array('user_id' => $comment->co_userid));
+					$user = $user_query->row();
+					echo "<div class = 'comment_div'>";
+					echo "By: " . "<span style='color:red;'>" . $user->user_name .
+					"</span>" . " at: " . $comment->co_date;
+					if($comment->co_userid == $user_id)
+						echo "<span style='color:blue; float:right;'><a href='".base_url()."home/delete_comment/".$comment->co_id."/".$row->pr_id."'>delete</a></span>";
+					echo "<p>" . $comment->co_comment . "</p>";
+					$comment_attachs = $this->HomeModel->get_where('la_attachments', array('at_commentid' => $comment->co_id));
+					echo "<p>";
+					foreach($comment_attachs->result() as $attach)
+					{
+
+						$file_name = explode("_", basename($attach->at_attach));
+						$file_ext = explode (".", basename($attach->at_attach));
+						if($file_name[0] !='')
+							echo "<a href='" . $attach->at_attach . "' target = '_blank'>". $file_name[0]. '.'. $file_ext[1]. "</a> -- ";
+					}
+					echo "</p></div>";
+				}
+				echo "<div style='background-color:#ccc;'>";
+				$att=array('id'=>'comment_insert_form');
+				$user_id=$this->session->userdata('user_id');
 
 
-			echo form_open('home/add_comment',$att);
-			echo "<table id = 'add_comment_table'>";
-			echo form_hidden('co_projectid',$row->pr_id);
-			echo form_hidden('co_userid',$user_id);
-			echo "<tr><td>";
-			echo "Add comment<br/>";
-			echo "<textarea rows='5' cols='60' name='co_comment' ></textarea><br/>";
-			echo form_submit('submit','Add comment');
-			echo "</td>";				
-			echo "<td style='width:50px;'></td>";
-			echo "<td id = 'comment_td'>";
-			echo '<div id="upload_div"><form>
-					<input id="file_upload" name="file_upload" type="file" multiple="false"/>
-					</form></div>';
-			echo "</td></tr>";
-			echo form_close();
-			echo "</div></div>";
-			
+				echo form_open('home/add_comment',$att);
+				echo "<table id = 'add_comment_table'>";
+				echo form_hidden('co_projectid',$row->pr_id);
+				echo form_hidden('co_userid',$user_id);
+				echo "<tr><td>";
+				echo "Add comment<br/>";
+				echo "<textarea rows='5' cols='60' name='co_comment' ></textarea><br/>";
+				echo form_submit('submit','Add comment');
+				echo "</td>";
+				echo "<td style='width:50px;'></td>";
+				echo "<td id = 'comment_td'>";
+				echo '<div id="upload_div"><form>
+						<input id="file_upload" name="file_upload" type="file" multiple="false"/>
+						</form></div>';
+				echo "</td></tr>";
+				echo form_close();
+				echo "</div></div>";
+
 	}
 
 

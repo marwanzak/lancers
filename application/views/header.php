@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8" />
 <title>Lancers!</title>
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="<?= base_url()?>js/jquery.js"></script>
 <script type="text/javascript" src="<?= base_url();?>js/jquery-ui-1.10.1.custom.min.js" ></script>
 <script type="text/javascript" src="<?= base_url();?>js/jquery.uploadify.min.js" ></script>

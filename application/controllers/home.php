@@ -4,6 +4,8 @@ class home extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->check_isvalidated();
+		$this->check_dropbox();
+
 
 	}
 
@@ -142,6 +144,7 @@ class home extends CI_Controller {
 
 
 	}
+	
 
 
 	//////////////////
@@ -209,6 +212,18 @@ class home extends CI_Controller {
 			redirect('login');
 		}
 	}
+	
+	private function check_dropbox(){
+		if(! $this->session->userdata('oauth_token')){
+			redirect('dropboxauth');
+		}
+		$params['key'] = 'qiz7e5nbuptai5y';
+		$params['secret'] = 'f4y9x2t0yzjjne9';
+		$params['access'] = array('oauth_token'=>urlencode($this->session->userdata('oauth_token')),
+				'oauth_token_secret'=>urlencode($this->session->userdata('oauth_token_secret')));
+
+		$this->load->library('dropbox', $params);
+	}
 	///////////////////
 	public function do_logout(){
 		$this->session->sess_destroy();
@@ -257,6 +272,47 @@ class home extends CI_Controller {
 		redirect(base_url().'home/c_panel/project/'.$_POST['pr_id'],'refresh');
 		
 	}
+	
+	///////////
+	public function getFoldersTree()
+	{
+		$folder = $_POST['folder'];
+		$tree = $this->HomeModel->dropbox_folderstree($folder);
+		echo json_encode($tree, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
+		
+	}
+	
+	public function getFiles()
+	{
+		$folder = $_POST['folder'];
+		$files = $this->HomeModel->dropbox_files($folder);
+		echo json_encode($files, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
+	
+	}
+	
+	public function getFolders()
+	{
+		$folder = $_POST['folder'];
+		$folders = $this->HomeModel->dropbox_folders($folder);
+		echo json_encode($folders, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
+	
+	}
+	
+	public function createFolder(){
+		$folder = $_POST['folder'];
+		$current_folder = $_POST['current_folder'];
+		$request = $this->dropbox->create_folder($current_folder . $folder, $root = "sandbox");
+		$respond = (isset($request->error) ? $request->error : "The folder '".$request->path."' has been created");
+		echo $respond;
+		
+	}
 
+	public function uploadFile(){
+		$folder = $_POST['folder'];
+		$file = $_POST['file'];
+		$request = $this-> dropbox->add($folder, $file, $params = array(), $root = "sandbox");
+		$respond = ((isset($request->error) || $request == null) ? $request : "The file '".$request->path."' has been created");
+		var_dump($respond);
+	}
 
 }

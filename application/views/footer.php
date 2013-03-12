@@ -19,6 +19,24 @@
 </div>
 </div>
 
+<!-- Create folder dialog -->
+<div id="create_folder_dialog" title="Create folder" class='dialog_div'>
+	<?php 
+	echo form_open();
+	echo '<label class = "add_label">Folder name</label>'.form_input(array('name' => 'create_input', 'id' => 'create_input'));
+	echo form_close();
+	?>
+</div>
+
+<!-- upload file dialog -->
+<div id="upload_file_dialog" title="Upload file" class='dialog_div'>
+	<?php 
+	echo form_open();
+	echo '<label class = "add_label">Folder name</label>'.form_upload(array('name' => 'drop_upload_input', 'id' => 'drop_upload_input'));
+	echo form_close();
+	?>
+</div>
+
 <!-- Insert Admin form -->
 <div id="add_admin_dialog" title="Add Admin Form" class='dialog_div'>
 	<?php 
@@ -34,7 +52,7 @@
 	echo form_open('home/add_admin',$att);
 	foreach($input_values as $key => $value)
 	{
-		echo '<p><label>'. $value .'</label>';
+		echo '<p><label class = "add_label">'. $value .'</label>';
 		echo form_input(array('name' => $key, 'class' => 'required'));
 		echo '</p>';
 
@@ -64,12 +82,11 @@
 	echo form_open('home/add_lancer',$att);
 	foreach($input_values as $key => $value)
 	{
-		echo '<p><label>'. $value .'</label>';
+		echo '<label class = "add_label">'. $value .'</label>';
 		echo form_input(array('name' => $key, 'class' => 'required'));
-		echo '</p>';
 
 	}
-	echo '<p>'.form_submit('submit','Add Lancer').'</p>';
+	echo form_submit('submit','Add Lancer');
 	echo form_close();
 	?>
 </div>
@@ -93,17 +110,15 @@
 	echo form_open('home/add_project',$att);
 	foreach($input_values as $key => $value)
 	{
-		echo '<p><label>'. $value .'</label>';
+		echo '<label class = "add_label">'. $value .'</label>';
 		if($key == 'pr_lancerid')
 		{
-			echo form_dropdown($key, $lancers, '', 'class = "required"');
-			echo '</p>';
+			echo form_dropdown($key, $lancers, '', 'class = "required"').'<br/>';
 			continue;				
 		}
 		if($key == 'pr_obj' || $key == 'pr_desc')
 		{
-			echo "<textarea name='".$key."' rows='4' cols='20'></textarea>";
-			echo "</p>";
+			echo "<textarea name='".$key."' rows='4' cols='20'></textarea><br/>";
 			continue;
 		}
 		if($key == 'pr_admincuragree')
@@ -114,8 +129,7 @@
 
     <input type="radio" id="RejectButton1" name="pr_admincuragree" value = "0" />
     <label id="RejectButtonLabel1" for="RejectButton1"></label>
-	</div>';
-			echo "</p><br/>";
+	</div><br/>';
 				
 			continue;
 				
@@ -129,17 +143,15 @@
 		
     <input type="radio" id="RejectButton2" name="pr_admindlagree" value = "0" />
     <label id="RejectButtonLabel2" for="RejectButton2"></label>
-	</div>';
-			echo "</p><br/>";
+	</div><br/>';
 		
 			continue;
 		
 		}
-		echo form_input(array('name' => $key, 'class' => 'required'));
-		echo '</p>';
+		echo form_input(array('name' => $key, 'class' => 'required')).'<br/>';
 
 	}
-	echo '<p>'.form_submit('submit','Add project').'</p>';
+	echo form_submit('submit','Add project');
 	echo form_close();
 	?>
 </div>
